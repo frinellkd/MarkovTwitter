@@ -53,18 +53,18 @@ class SimpleMarkovGenerator(object):
         first_key = random.choice(dictionary.keys())
 
         # Start sentence with both words in first key
-        goofy_sentence = first_key[0] + " " + first_key[1]
+        goofy_sentence_list = [first_key[0], first_key[1]]
 
 
         # Run as long as key is in the dicitonary    
-        while first_key in dictionary and len(goofy_sentence) <= self.character_limit:
+        while first_key in dictionary: 
 
             # go back to dictionary, find values of the key that we returned
             # randomly select word from that list
             next_word = random.choice(dictionary[first_key])
 
             # add that randomly selected word to the sentence
-            goofy_sentence += " " + next_word
+            goofy_sentence_list.append(next_word)
 
             # find key that starts with the second value in first_word and the randomly selected
             # then assigns it to first key to continue loop
@@ -73,15 +73,27 @@ class SimpleMarkovGenerator(object):
                 # next_word ('could')
                 # --> first_key ('you', 'could')
             first_key = (first_key[1],next_word) 
-        
+            
+        goofy_sentence = " ".join(goofy_sentence_list)
+        goofy_sent_cap_corr = goofy_sentence.capitalize()
+        goofy_word_corr_len = goofy_sent_cap_corr[:character_limit]
 
-        return goofy_sentence
-        # goofy_sent_rmv_punc = goofy_sentence
+        return goofy_word_corr_len
         
-        # for punc in string.punctuation:
-        #     goofy_sent_rmv_punc = goofy_sent_rmv_punc.replace(punc, "")   
+        # punc = [".", "!", "?"]
+
+        # for pun in punc:
+        #     for char in goofy_sentence:
+        #         if pun == char:
+        #             print "puntuation looking for: ", pun
+        #             index_of_punc = goofy_sentence.index(pun)
+        #             index_of_let_change = index_of_punc +2
+        #             print index_of_punc, index_of_let_change
+        #             goofy_sent_cap_corr= goofy_sentence[index_of_let_change].upper()
+        # print goofy_sent_cap_corr
+        #             #goofy_sent_cap_corr=goofy_sentence[0].upper   
         
-        # return goofy_sent_rmv_punc
+        # #return goofy_sent_cap_corr
 
 
 class TweetableMarkovGenerator(SimpleMarkovGenerator):
